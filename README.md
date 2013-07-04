@@ -29,4 +29,4 @@ To verify your server capacity you can time the script and make sure that it tak
 
     time ./munin2Canopsis.pl
 
-Actually, it don't send any perdata unit : it can get Munin's vlabel as unit, but I don't like it, so I prefer to not send unit.
+Actually, it doesn't send any perdata unit : it can get Munin's vlabel as unit, but I don't like it, so I prefer to not send unit.
