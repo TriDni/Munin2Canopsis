@@ -28,3 +28,5 @@ Take care to have enough space for MongoDB, and to not have more than 15000 RRDs
 To verify your server capacity you can time the script and make sure that it takes less than 4-5 min to execute.
 
     time ./munin2Canopsis.pl
+
+Actually, it don't send any perdata unit : it can get Munin's vlabel as unit, but I don't like it, so I prefer to not send unit.
