@@ -24,7 +24,7 @@ Then, you have to automate this script. I choose to had it in a Crontab to execu
 
 ##Warning
 
-Take care to have enough space for MongoDB, and to not have more than 15000 RRDs to send to Canopsis.
+Take care to have enough space for MongoDB, and to not have more than 15000 RRDs to send to Canopsis (I think it could work with a little more RRDs but I haven't precisely measure it).
 Execute the following command to know how many RRD files you have) :
 
     find /var/lib/munin/ -type f | wc -l  
