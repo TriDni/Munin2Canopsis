@@ -34,3 +34,5 @@ Indeed, RabbitMQ could queue AMQP messages if you have too much of these. To ver
     time ./munin2Canopsis.pl
 
 Actually, it doesn't send any perdata unit : it can get Munin's vlabel as unit, but I don't like it, so I prefer to not send unit.
+
+I had realized a Python's version of this script, but I think you should use Perl's version because it runs really faster than Python's. I think because a lot of regexp are used to do the job (everybody knows that Perl is better in regexp ! :) )
