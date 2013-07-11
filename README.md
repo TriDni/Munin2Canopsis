@@ -24,8 +24,12 @@ Then, you have to automate this script. I choose to had it in a Crontab to execu
 
 ##Warning
 
-Take care to have enough space for MongoDB, and to not have more than 15000 RRDs to send to Canopsis (execute "find /var/lib/munin/ -type f | wc -l" command to know how many RRD files you have). Indeed, RabbitMQ could queue AMQP messages if you have too much of these.
-To verify your server capacity you can time the script and make sure that it takes less than 4-5 min to execute (munin-update time period).
+Take care to have enough space for MongoDB, and to not have more than 15000 RRDs to send to Canopsis.
+Execute the following command to know how many RRD files you have) :
+
+    find /var/lib/munin/ -type f | wc -l  
+
+Indeed, RabbitMQ could queue AMQP messages if you have too much of these. To verify your server capacity you can time the script and make sure that it takes less than 4-5 min to execute (munin-update time period).
 
     time ./munin2Canopsis.pl
 
