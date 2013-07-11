@@ -39,10 +39,10 @@ sub scanRep {
 				my $min = ${$metric}{min};
 				my $name = ${$metric}{name};
 				my $path = ${$metric}{path};
-				if (!-e $path) { next; }#on oublie si le fichier est inexistant
+				if (!-e $path) { next; }#next if rrd path is not set
 				my $stamp = 0;
 				my $type = ${$metric}{type};
-				my $connector_name = $connector;#.$dir;
+				my $connector_name = $connector;
 				parseRrdAndSendIt($channel, $path, $connector_name, $component, $resource, $name, $unit, $type, $max, $min, $stamp);	
 				}
 		}
@@ -95,7 +95,7 @@ sub buildRrdObj {
 			elsif ($type eq "type") {
 				$metric{type} = emptyVal($value);
 				}
-			#génération du chemin du rrd pour la métrique
+			#find absolute path of rrd file
 			if (defined $metric{type} && defined $domain && defined $node && defined $plugin && defined $metric{id}) {
 				my $metricInstance = $metric{id};
 				$metricInstance =~ s/\./-/;
@@ -104,7 +104,7 @@ sub buildRrdObj {
 				}
 			$tmpMetric = $instance;
 			} 
-		else { #plugin config
+		else { #get plugin config
 			if (defined $tmpPlugin && $tmpPlugin ne $plugin && %metric && (defined $metric{id} && defined $metric{name} && defined $metric{type} && defined $metric{path})) {
        	                	my $this = {"id", $metric{id}, "name", $metric{name}, "type", $metric{type}, "min", $metric{min}, "max", $metric{max}, "path", $metric{path}};
                         	bless($this, $metric{id});
@@ -120,7 +120,7 @@ sub buildRrdObj {
 				}
 			}
 	        if ((defined $tmpPlugin && $tmpPlugin ne $plugin)) {
-			my @tmpMetric = @metricObj; #nécessaire pour éviter la réinitialisation de "metric" sur l'objet
+			my @tmpMetric = @metricObj; #needed to have another ref for this value (and not erase it)
                 	my $this = {"component", $tmpNode, "resource", $tmpPlugin, "unit", emptyVal($unit), "metric", \@tmpMetric};
 	                bless($this, $tmpDomain."-".$tmpNode."-".$tmpPlugin);
 		        push(@obj, $this);
@@ -202,7 +202,7 @@ sub parseRrdAndSendIt {
 		           "output" => $perf_data_unit,
 		           "timestamp" => $timestamp,
 		           "perf_data_array" => [{
-			 							 "metric" => $perf_data_metric,
+						     "metric" => $perf_data_metric,
 			                             "unit" => "",
 			                             "value" => $perf_data_value,
 			                             "type" => $perf_data_type
