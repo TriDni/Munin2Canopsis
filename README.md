@@ -25,7 +25,7 @@ Then, you have to automate this script. I choose to had it in a Crontab to execu
 ##Warning
 
 Take care to have enough space for MongoDB, and to not have more than 15000 RRDs to send to Canopsis. Indeed, RabbitMQ could queue AMQP messages if you have too much of these.
-To verify your server capacity you can time the script and make sure that it takes less than 4-5 min to execute.
+To verify your server capacity you can time the script and make sure that it takes less than 4-5 min to execute (munin-update time period).
 
     time ./munin2Canopsis.pl
 
