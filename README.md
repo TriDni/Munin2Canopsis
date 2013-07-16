@@ -45,11 +45,11 @@ This script allows to inject some Munin's plugin Datas in Canopsis. It scans Mun
 ##Requirements
 
     sudo apt-get install make libclass-data-inheritable-perl libtest-deep-perl libmoosex-app-cmd-perl libcoro-perl libjson-xs-perl libxml-libxml-perl libconfig-any-perl libmoosex-attributehelpers-perl libmoosex-configfromfile-perl libtest-exception-perl libfile-sharedir-perl libreadonly-xs-perl libuuid-tiny-perl
-    sudo cpan -i Net::RabbitFoot
-    sudo cpan -i JSON::XS
-    sudo cpan -i Term::Pager
-    sudo cpan -i Term::ReadKey
-    sudo cpan -i HTTP::Date
+    cpan -i Net::RabbitFoot
+    cpan -i JSON::XS
+    cpan -i Term::Pager
+    cpan -i Term::ReadKey
+    cpan -i HTTP::Date
     
 ##Usage
 
