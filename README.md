@@ -53,6 +53,7 @@ This script allows to inject some Munin's plugin Datas in Canopsis. It scans Mun
     
 ##Usage
 
+You can modify settings in script's head (like munin2Canopsis.pl script).
 Just launch it and complete forms :
 
     ./insertMuninData.pl
@@ -61,3 +62,4 @@ In this form, you have to give some informations : first step is to search compo
 Second step is to select resource (Munin's plugin) among list available. 
 Last step is to select a begin and end datetime period (if you let these field empty, all data will be injected to Canopsis).
 
+Warning : You have to wait 5-10 minutes to see changes in Canopsis Web UI.
