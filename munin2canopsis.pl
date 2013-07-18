@@ -199,7 +199,7 @@ sub parseRrdAndSendIt {
 		           "resource" => $resource,
 		           "state" => 0,
 		           "state_type" => 1,
-		           "output" => $perf_data_unit,
+		           "output" => $output,
 		           "timestamp" => $timestamp,
 		           "perf_data_array" => [{
 						     "metric" => $perf_data_metric,
