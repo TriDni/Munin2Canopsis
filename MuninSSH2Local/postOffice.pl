@@ -21,15 +21,14 @@ sub sortingOffice {
   my ($object, $rabbit_address, $rabbit_port, $rabbit_user, $rabbit_pwd, $connector) = @_;
 	my ($resource, $component, $metricObj, $metricData, $name, $type);
 
-#	my $connect = Net::RabbitFoot->new()->load_xml_spec()->connect(
-#		        host => $rabbit_address,
-#		        port => $rabbit_port,
-#		        user => $rabbit_user,
-#		        pass => $rabbit_pwd,
-#		        vhost => 'canopsis',
-#       		);
-#	my $channel = $connect->open_channel();		
-	my $channel;	
+	my $connect = Net::RabbitFoot->new()->load_xml_spec()->connect(
+		        host => $rabbit_address,
+		        port => $rabbit_port,
+		        user => $rabbit_user,
+		        pass => $rabbit_pwd,
+		        vhost => 'canopsis',
+       		);
+	my $channel = $connect->open_channel();			
 
 	foreach my $plugin (@$object) {
 		$resource =  ${$plugin}{resource};
@@ -42,13 +41,12 @@ sub sortingOffice {
 			if (defined $metricData) {
 				my %hash = %$metricData;
 				foreach my $timestamp (keys %hash) {
-#					print $timestamp." - ".$hash{$timestamp}."\n";
 					deliveryDriver($connector, $component, $resource, $timestamp, $name, $hash{$timestamp}, $type, $channel);
 					}
 				}				
 			}
 		}
-	#$connect->close();
+	$connect->close();
 }
 
 sub deliveryDriver {
@@ -73,6 +71,10 @@ sub deliveryDriver {
 			};
 	
 	my $encoded = JSON::XS->new->utf8->space_after->encode($unencoded);
-	print $encoded."\n\n";	
-
+	
+	$channel->publish(
+			exchange => 'canopsis.events',
+			routing_key => "cli.".$connector_name.".log.resource".$component.".".$resource,
+			body => $encoded,
+			);
 }
