@@ -2,6 +2,9 @@ Munin2Canopsis
 ==============
 
 This script is a connector for Canopsis. It allows to send in real time Munin's datas to Canopsis.
+Note : Sorry for my bad english, i'm french ;) French documentation is here :
+
+    http://triden.org
 
 ##Requirements
 
@@ -63,3 +66,49 @@ Second step is to select resource (Munin's plugin) among list available.
 Last step is to select a begin and end datetime period (if you let these field empty, all data will be injected to Canopsis).
 
 Warning : You have to wait 5-10 minutes to see changes in Canopsis Web UI.
+
+MuninSSH2Local
+==============
+
+These two scripts allow to get remote server's Munin Data through SSH on a local server (Canopsis). It's usefull if your remote server can't connect to your RabbitMQ and if you can only use SSH way.
+The script on the remote server will get Munin's Data and will print it as encoded JSON string. You just have to use pipe and get STDIN with the script which is used in your local server (Canopsis). This local script will send data to RabbitMQ.
+
+##Requirements
+
+On the remote server (Munin), you just need JSYNC CPAN library : 
+
+    cpan -i JSYNC
+    
+On the local server (Canopsis), you need common library needed to send Data to RabbitMQ :
+
+    sudo apt-get install make libclass-data-inheritable-perl libtest-deep-perl libmoosex-app-cmd-perl libcoro-perl libjson-xs-perl libxml-libxml-perl libconfig-any-perl libmoosex-attributehelpers-perl libmoosex-configfromfile-perl libtest-exception-perl libfile-sharedir-perl libreadonly-xs-perl libuuid-tiny-perl
+    cpan -i Net::RabbitFoot
+    cpan -i JSON::XS
+    cpan -i JSYNC
+    
+##Usage
+
+On the remote server, just edit "$path" variable on the head of "postMan.pl" and complete with your munin rrd folder path (only if you change this default value on Munin's configuration).
+
+    my $path = "/var/lib/munin/";
+    
+You can test "postMan.pl", normally it will print a big JSON STRING object.
+
+On the local server, edit head variable (RabbitMQ connection informations and the connector name like "Munin - remote server").
+
+    my $rabbit_address = "127.0.0.1";
+    my $rabbit_port = 5672;
+    my $rabbit_user = "guest";
+    my $rabbit_pwd = "guest";
+    my $connector = "Munin - Remote server";
+
+I will probably add options features to set these parameters.
+
+To execute import, this is an example :
+
+    ssh user@remoteserver.org ./postMan.pl | ./postOffice.pl
+    
+In this case, "postMan.pl" is located in home of "user" user in the remote server (modify with your own path). 
+"postOffice.pl" is in current directory in local server.
+
+This command is executed on local server.
