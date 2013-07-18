@@ -4,7 +4,7 @@ Munin2Canopsis
 This script is a connector for Canopsis. It allows to send in real time Munin's datas to Canopsis.
 Note : Sorry for my bad english, i'm french ;) French documentation is here :
 
-    http://triden.org
+http://triden.org
 
 ##Requirements
 
