@@ -3,9 +3,16 @@
 use strict;
 #use warnings;
 use JSYNC;
+use Getopt::Long;
 
-my $path = "/var/lib/munin/";
-my $obj = buildRrdObj($path);
+my ($path, $domain, $help);
+
+GetOptions ('munin-path=s' => \$path, 'domain=s' => \$domain, 'help' => \$help);
+
+if (defined $help or $ARGV[0] eq "help") { usage();}
+if (!defined $path) { $path = "/var/lib/munin/"; } else { addEndSlash($path); }
+
+my $obj = buildRrdObj($path, $domain);
 
 my $json = JSYNC::dump($obj);#, {pretty => 1});
 print $json;
@@ -53,7 +60,7 @@ sub type2Ext {
 
 sub buildRrdObj {
 
-	my ($path) = @_;
+	my ($path, $filterDomain) = @_;
 	$path = addEndSlash($path);
 	my $datafile = $path."datafile";
 	my ($domain, $node, $plugin, $instance, $type, $value, $resource, $component);
@@ -108,11 +115,13 @@ sub buildRrdObj {
 				}
 			}
 	        if ((defined $tmpPlugin && $tmpPlugin ne $plugin)) {
-			my @tmpMetric = @metricObj; #nécessaire pour éviter la réinitialisation de "metric" sur l'objet
-                	my $this = {"component", $tmpNode, "resource", $tmpPlugin, "metric", \@tmpMetric};
-	                bless($this, $tmpDomain."-".$tmpNode."-".$tmpPlugin);
-		        push(@obj, $this);
-			undef @metricObj;
+	        	if (!defined $path) { $path = "/var/lib/munin/"; } else { addEndSlash($path); }
+				my @tmpMetric = @metricObj; #nécessaire pour éviter la réinitialisation de "metric" sur l'objet
+                		my $this = {"component", $tmpNode, "resource", $tmpPlugin, "metric", \@tmpMetric};
+	              		bless($this, $tmpDomain."-".$tmpNode."-".$tmpPlugin);
+		        	push(@obj, $this);
+				undef @metricObj;
+	        		}
        		        }
 		$tmpDomain = $domain;
 		$tmpNode = $node;
@@ -152,4 +161,14 @@ sub parseRrd {
 	};
 	unlink "/tmp/tmp_rrd.xml2";
 	return \%perf_data;
+}
+
+sub usage {
+
+        print "\n\n == Options == ";
+        print "\n\n--domain        munin-node to filter (like localdomain, folder in /var/lib/munin/)\n";
+        print "--munin-path    root path of munin RRD (default : /var/lib/munin/)\n\n";
+
+        exit;
+
 }
