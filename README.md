@@ -88,9 +88,11 @@ On the local server (Canopsis), you need common library needed to send Data to R
     
 ##Usage
 
-On the remote server, just edit "$path" variable on the head of "postMan.pl" and complete with your munin rrd folder path (only if you change this default value on Munin's configuration).
+You can use options to set the script :
 
-    my $path = "/var/lib/munin/";
+    --domain           munin-node to filter (like localdomain, folder in /var/lib/munin/)
+    --munin-path       root path of munin RRD (default : /var/lib/munin/)
+    --help or help     show this
     
 You can test "postMan.pl", normally it will print a big JSON STRING object.
 
@@ -102,7 +104,6 @@ On the local server, edit head variable (RabbitMQ connection informations and th
     my $rabbit_pwd = "guest";
     my $connector = "Munin - Remote server";
 
-I will probably add options features to set these parameters.
 
 To execute import, this is an example :
 
