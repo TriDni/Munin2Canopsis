@@ -168,6 +168,7 @@ sub usage {
         print "\n\n == Options == ";
         print "\n\n--domain        munin-node to filter (like localdomain, folder in /var/lib/munin/)\n";
         print "--munin-path    root path of munin RRD (default : /var/lib/munin/)\n\n";
+	print "--help or help     show this\n\n";
 
         exit;
 
