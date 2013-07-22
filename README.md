@@ -94,7 +94,7 @@ You can use options to set the script :
     --munin-path       root path of munin RRD (default : /var/lib/munin/)
     --help or help     show this
     
-You can test "postMan.pl", normally it will print a big JSON STRING object.
+You can test "postMan.pl", normally it will print a big JSON STRING object. If you don't want to send all datas, you can use domain filter : it allows to send only datas for setted domain, munin-node (like "localdomain").
 
 On the local server, edit head variable (RabbitMQ connection informations and the connector name like "Munin - remote server").
 
