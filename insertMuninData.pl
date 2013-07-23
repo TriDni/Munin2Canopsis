@@ -72,7 +72,7 @@ foreach my $plugin (@$rrdObj) {
 	}
 
 my $printResource = Term::Pager->new( rows => $rows, cols => $columns);
-$printComponent->add_text("\n");
+$printResource->add_text("\n");
 foreach my $key ( sort {$a<=>$b} keys %resource) {
     $printResource->add_text("[$key] $resource{$key}\n");
     }
