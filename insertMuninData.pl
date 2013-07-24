@@ -14,7 +14,7 @@ use Data::Dumper;
 use HTTP::Date;
 
 my $syncPath = "/var/lib/munin/";
-my $rabbit_address = "192.168.255.205";
+my $rabbit_address = "127.0.0.1";
 my $rabbit_port = 5672;
 my $rabbit_user = "guest";
 my $rabbit_pwd = "guest";
