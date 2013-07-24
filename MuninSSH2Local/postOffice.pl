@@ -1,7 +1,11 @@
 #!/usr/bin/perl
 
+# License
+#   GPLv2 (http://www.gnu.org/licenses/gpl-2.0.txt)
+# Authors
+#   DENNI Tristan
+
 use strict;
-use warnings;
 use Data::Dumper;
 use JSYNC;
 use Net::RabbitFoot;
