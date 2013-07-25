@@ -3,7 +3,7 @@
 # License
 #   GPLv2 (http://www.gnu.org/licenses/gpl-2.0.txt)
 # Authors
-#   DENNI Tristan
+#   DENNI Tristan (http://triden.org)
 
 use strict;
 use Data::Dumper;
