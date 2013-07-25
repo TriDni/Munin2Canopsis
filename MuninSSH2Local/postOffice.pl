@@ -77,7 +77,7 @@ sub deliveryDriver {
 	
 	$channel->publish(
 			exchange => 'canopsis.events',
-			routing_key => "cli.".$connector_name.".log.resource".$component.".".$resource,
+			routing_key => "cli.".$connector.".log.resource".$component.".".$resource,
 			body => $encoded,
 			);
 }
