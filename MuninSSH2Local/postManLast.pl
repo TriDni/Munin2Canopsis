@@ -18,12 +18,12 @@ if (!defined $path) { $path = "/var/lib/munin/"; } else { addEndSlash($path); }
 
 my $obj = buildRrdObj($path, $domain);
 
-my $json = JSYNC::dump($obj, {pretty => 1});
+my $json = JSYNC::dump($obj);#, {pretty => 1});
 print $json;
 
 sub addEndSlash {
   my ($string) = @_;
-  if (not $string =~ /.*\/$/) { $string .= "/"; }
+	if (not $string =~ /.*\/$/) { $string .= "/"; }
 	return $string;
 }
 
@@ -85,10 +85,14 @@ sub buildRrdObj {
 			($type) = $_ =~ /^.*;.*:[\w|\.|\-]*\.([\w*|\-*]*)\s+.*$/;
 			($value) = $_ =~ /\s+(.*)$/;
 			if ((%metric && (defined $tmpMetric && $tmpMetric ne $instance) || (defined $tmpPlugin && $tmpPlugin ne $plugin)) && (defined $metric{id} && defined $metric{name} && defined $metric{type} && defined $metric{path})) {
-				my $this = {"id", $metric{id}, "name", $metric{name}, "type", $metric{type}, "data", parseRrd($metric{path})};
-				bless($this, $metric{id});
-				push(@metricObj, $this);
-				undef %metric;
+				my $data = parseRrd($metric{path});
+				if (!defined ${$data}{NaN}) {	
+					my $this = {"id", $metric{id}, "name", $metric{name}, "type", $metric{type}, "data", $data};
+					bless($this, $metric{id});
+					push(@metricObj, $this);
+					undef %metric;
+					}
+				else { undef %metric; }
 				}
 			$metric{id} = $instance;
 			if ($type eq "label") {
@@ -108,10 +112,14 @@ sub buildRrdObj {
 			} 
 		else { #plugin config
 			if (defined $tmpPlugin && $tmpPlugin ne $plugin && %metric && (defined $metric{id} && defined $metric{name} && defined $metric{type} && defined $metric{path})) {
-       	                	my $this = {"id", $metric{id}, "name", $metric{name}, "type", $metric{type}, "path", $metric{path}};
-                        	bless($this, $metric{id});
-                        	push(@metricObj, $this);
-                        	undef %metric;
+				my $data = parseRrd($metric{path});
+				if (!defined ${$data}{NaN}) { 
+	      	                	my $this = {"id", $metric{id}, "name", $metric{name}, "type", $metric{type}, "data", $data};
+        	                	bless($this, $metric{id});
+                	        	push(@metricObj, $this);
+                        		undef %metric;
+					}
+				else { undef %metric; }
                         	}
 			($type) = $_ =~ /.*\.(graph_\w*)\s.*$/;
 			if (emptyVal($type) eq "graph_title") {
@@ -156,9 +164,8 @@ sub parseRrd {
         chomp($timestamp);
         my ($value) = $last =~ /.*=\s+\"(.*)\"/;
 
-        if ($value ne "NaN" && $value ne "U") {
-                $perf_data{$timestamp} = $value;
-                }
-        return \%perf_data;
+        if ($value ne "NaN" && $value ne "U") { $perf_data{$timestamp} = $value; }
+	else { $perf_data{NaN} = "NaN"; }
+	return \%perf_data;
 }
 
