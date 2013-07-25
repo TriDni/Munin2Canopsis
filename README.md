@@ -40,6 +40,28 @@ Actually, it doesn't send any perdata unit : it can get Munin's vlabel as unit, 
 
 I had realized a Python's version of this script, but I think you should use Perl's version because it runs really faster than Python's. I think because a lot of regexp are used to do the job (everybody knows that Perl is better in regexp ! :) )
 
+##Crontab never execute script
+
+If the script works perfectly when executed manually and not via crontab, the problem could be a missing Perl library. To solve this, you just have to identify libraries in @INC (Perl array that contains all libraries Root Path).
+This will return it contents :
+
+    perl -le 'use Data::Dumper; print Dumper(\@INC)'
+
+I observe that this is user libs that are missing. In my case, these two lines are missing :
+
+    '/opt/canopsis/perl5/lib/perl5/x86_64-linux-gnu-thread-multi'
+    '/opt/canopsis/perl5/lib/perl5'
+    
+To solve definitly this problem, add in the script's head :
+
+    #!/usr/bin/perl
+    BEGIN {
+        push(@INC, '/opt/canopsis/perl5/lib/perl5/x86_64-linux-gnu-thread-multi');
+        push(@INC, '/opt/canopsis/perl5/lib/perl5');
+    }
+
+Now crontab will do it job perfectly !
+
 insertMuninData
 ===============
 
