@@ -95,6 +95,8 @@ MuninSSH2Local
 These two scripts allow to get remote server's Munin Data through SSH on a local server (Canopsis). It's usefull if your remote server can't connect to your RabbitMQ and if you can only use SSH way.
 The script on the remote server will get Munin's Data and will print it as encoded JSON string. You just have to use pipe and get STDIN with the script which is used in your local server (Canopsis). This local script will send data to RabbitMQ.
 
+Note : There are two versions, postManGlobal.pl which send all datas (with filter) and postManLast.pl which send only last record.
+
 ##Requirements
 
 On the remote server (Munin), you just need JSYNC CPAN library : 
