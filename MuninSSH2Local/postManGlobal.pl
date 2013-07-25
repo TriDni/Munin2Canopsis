@@ -119,7 +119,7 @@ sub buildRrdObj {
 				}
 			}
 	        if ((defined $tmpPlugin && $tmpPlugin ne $plugin)) {
-	        	if (!defined $path) { $path = "/var/lib/munin/"; } else { addEndSlash($path); }
+	        	if ((defined $filterDomain && $tmpDomain && $filterDomain eq $tmpDomain) || !defined $filterDomain) {
 				my @tmpMetric = @metricObj; #nécessaire pour éviter la réinitialisation de "metric" sur l'objet
                 		my $this = {"component", $tmpNode, "resource", $tmpPlugin, "metric", \@tmpMetric};
 	              		bless($this, $tmpDomain."-".$tmpNode."-".$tmpPlugin);
