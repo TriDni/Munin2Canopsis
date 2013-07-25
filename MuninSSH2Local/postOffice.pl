@@ -6,7 +6,6 @@
 #   DENNI Tristan (http://triden.org)
 
 use strict;
-use Data::Dumper;
 use JSYNC;
 use Net::RabbitFoot;
 use JSON::XS;
